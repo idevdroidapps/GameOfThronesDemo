@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.google.gson.Gson
 import com.shieldai.samples.shieldaichallenge.R
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
 import com.shieldai.samples.shieldaichallenge.data.models.Image
@@ -31,6 +32,7 @@ class RawJsonWorker(val context: Context, workerParams: WorkerParameters) :
         episodes.forEach {
           Log.d("JSON", it.name)
           Log.d("JSON", it.image.original)
+            //TODO INSERT TO ROOM DB
         }
       }
     } catch (e: Exception) {
@@ -55,7 +57,7 @@ class RawJsonWorker(val context: Context, workerParams: WorkerParameters) :
     return byteStream.toString()
   }
 
-  fun parseEpisodes(jsonString: String): List<Episode> {
+  private fun parseEpisodes(jsonString: String): List<Episode> {
     val episodeList = ArrayList<Episode>()
     try {
       val jsonObject: JSONObject? = JSONObject(jsonString)
@@ -63,44 +65,8 @@ class RawJsonWorker(val context: Context, workerParams: WorkerParameters) :
         val episodes = jsonObject.optJSONArray("episodes")
         if (episodes != null) {
           for (i in 0 until episodes.length()) {
-
-            val episode = episodes.getJSONObject(i)
-            val id = episode.optInt("id")
-            val url = episode.optString("url")
-            val name = episode.optString("name")
-            val season = episode.optInt("season")
-            val number = episode.optInt("number")
-            val airdate = episode.optString("airdate")
-            val airtime = episode.optString("airtime")
-            val airstamp = episode.optString("airstamp")
-            val runtime = episode.optInt("runtime")
-            val image = episode.optJSONObject("image")
-            val summary = episode.optString("summary")
-
-            var _episode: Episode? = null
-            var _image: Image? = null
-
-            image?.let {
-              _image = Image(it.optString("medium"), it.optString("original"))
-            }
-            _image?.let {
-              _episode = Episode(
-                airdate,
-                airstamp,
-                airtime,
-                id,
-                it,
-                name,
-                number,
-                runtime,
-                season,
-                summary,
-                url
-              )
-            }
-            _episode?.let {
-              episodeList.add(it)
-            }
+            val episode = Gson().fromJson(episodes.getJSONObject(i).toString(), Episode::class.java)
+            episodeList.add(episode)
           }
         }
       } else {
