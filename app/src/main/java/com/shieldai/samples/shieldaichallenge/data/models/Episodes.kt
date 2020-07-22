@@ -1,7 +1,6 @@
 package com.shieldai.samples.shieldaichallenge.data.models
 
 data class Episode(
-    val _links: Links ,
     val airdate: String,
     val airstamp: String,
     val airtime: String,
@@ -15,15 +14,7 @@ data class Episode(
     val url: String
 )
 
-data class Links(
-    val self: Self
-)
-
 data class Image(
     val medium: String,
     val original: String
-)
-
-data class Self(
-    val href: String
 )
