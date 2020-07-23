@@ -1,6 +1,6 @@
 package com.shieldai.samples.shieldaichallenge.data.database
 
-import androidx.paging.DataSource
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
 
@@ -15,15 +15,15 @@ interface EpisodeDao {
   suspend fun insertEpisodes(episodes: List<Episode>)
 
   @Update
-  fun update(episode: Episode)
+  suspend fun update(episode: Episode)
 
   @Delete
-  fun deleteEpisode(episode: Episode)
+  suspend fun deleteEpisode(episode: Episode)
 
   @Query("DELETE FROM Episode")
-  fun clearAllEpisodes()
+  suspend fun clearAllEpisodes()
 
   @Query("SELECT * FROM Episode")
-  fun getEpisodes(): DataSource.Factory<Int, Episode>
+  fun getEpisodes(): LiveData<List<Episode>>
 
 }

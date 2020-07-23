@@ -9,9 +9,7 @@ import androidx.work.Constraints
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
-import com.shieldai.samples.shieldaichallenge.data.models.Image
-import com.shieldai.samples.shieldaichallenge.data.models.Links
-import com.shieldai.samples.shieldaichallenge.util.RawJsonWorker
+import com.shieldai.samples.shieldaichallenge.data.workers.RawJsonWorker
 
 @Database(entities = [Episode::class], version = 1, exportSchema = false)
 abstract class EpisodeDatabase: RoomDatabase() {
@@ -45,7 +43,7 @@ abstract class EpisodeDatabase: RoomDatabase() {
       val oneTimeWorkRequest = OneTimeWorkRequestBuilder<RawJsonWorker>()
         .setConstraints(constraints)
         .build()
-      WorkManager.getInstance(context.applicationContext).enqueue(oneTimeWorkRequest)
+      WorkManager.getInstance(context).enqueue(oneTimeWorkRequest)
     }
   }
 

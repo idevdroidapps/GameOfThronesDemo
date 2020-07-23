@@ -1,7 +1,6 @@
-package com.shieldai.samples.shieldaichallenge.util
+package com.shieldai.samples.shieldaichallenge.data.workers
 
 import android.content.Context
-import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
@@ -25,7 +24,7 @@ class RawJsonWorker(private val context: Context, workerParams: WorkerParameters
       val jsonString = readFileFromRawDirectory(R.raw.game_of_thrones_episodes)
       jsonString?.let { json ->
         val episodes = parseEpisodes(json)
-        val dao = EpisodeDatabase.getInstance(context.applicationContext).dao
+        val dao = EpisodeDatabase.getInstance(context).dao
         dao.insertEpisodes(episodes)
       }
     } catch (e: Exception) {
