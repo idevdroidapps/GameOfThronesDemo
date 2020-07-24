@@ -35,6 +35,14 @@ fun TextView.setHtmlText(summary: String?){
   }
 }
 
+@BindingAdapter("itemTitle")
+fun TextView.setItemTitle(episode: Episode?){
+  episode?.let {
+    val itemText = "S${episode.season} Ep${episode.number}: ${episode.name}"
+    text = itemText
+  }
+}
+
 @BindingAdapter("originalImage")
 fun ImageView.originalImage(originalUrl: String?) {
   originalUrl?.let { url ->

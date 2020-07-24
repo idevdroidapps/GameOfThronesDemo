@@ -2,4 +2,6 @@
 <resources>
   <dimen name="material_spacing_standard">16dp</dimen>
   <dimen name="image_margin">8dp</dimen>
+  <dimen name="summary_text_size">16sp</dimen>
+  <dimen name="list_elevation">8dp</dimen>
 </resources>

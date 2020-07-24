@@ -12,10 +12,9 @@
       android:id="@+id/scrollView_main"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintStart_toEndOf="@id/guideline"
       app:layout_constraintEnd_toEndOf="parent"
-      >
+      app:layout_constraintStart_toEndOf="@id/guideline"
+      app:layout_constraintTop_toTopOf="parent">
 
       <LinearLayout
         android:layout_width="match_parent"
@@ -27,8 +26,8 @@
           android:id="@+id/imageView_episode"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:adjustViewBounds="true"
           android:layout_weight="1"
+          android:adjustViewBounds="true"
           app:originalImage="@{viewmodel.episode.image.original}"
           tools:ignore="ContentDescription" />
 
@@ -37,6 +36,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="2"
+          android:padding="@dimen/material_spacing_standard"
+          android:textSize="@dimen/summary_text_size"
           app:htmlText="@{viewmodel.episode.summary}" />
 
       </LinearLayout>
@@ -49,17 +50,28 @@
       android:orientation="vertical"
       app:layout_constraintGuide_percent="0.35" />
 
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recyclerView_episodes"
+    <androidx.cardview.widget.CardView
       android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      app:episodesData="@{viewmodel.episodes}"
-      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      android:layout_height="match_parent"
+      android:outlineAmbientShadowColor="@color/shield_charcoal_grey"
+      android:outlineSpotShadowColor="@color/shield_charcoal_grey"
+      app:cardElevation="@dimen/list_elevation"
+      android:elevation="@dimen/list_elevation"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@+id/guideline"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:listitem="@layout/list_item" />
+      app:layout_constraintTop_toTopOf="parent">
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_episodes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/shield_white"
+        app:episodesData="@{viewmodel.episodes}"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/list_item" />
+
+    </androidx.cardview.widget.CardView>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

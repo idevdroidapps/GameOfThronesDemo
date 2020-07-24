@@ -5,9 +5,9 @@
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="96dp"
     android:onClick="@{() -> viewModel.onItemClick(episode, position)}"
-    android:background="@drawable/item_bg_selector">
+    android:background="@drawable/background_selected_item">
 
     <ImageView
       android:id="@+id/label_thumbnail"
@@ -28,9 +28,9 @@
       android:layout_height="0dp"
       android:layout_margin="@dimen/material_spacing_standard"
       android:gravity="center_vertical"
-      android:maxLines="2"
+      android:maxLines="3"
       android:singleLine="false"
-      android:text="@{episode.name}"
+      app:itemTitle="@{episode}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/guideline_item"
