@@ -8,6 +8,8 @@ class EpisodeRepository private constructor(private val dao: EpisodeDao) {
 
   fun getEpisodes(): LiveData<List<Episode>> = dao.getEpisodes()
 
+  fun getFirstEpisode(): LiveData<Episode> = dao.getFirstEpisode()
+
   companion object {
     // For Singleton instantiation
     @Volatile

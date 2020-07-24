@@ -26,4 +26,7 @@ interface EpisodeDao {
   @Query("SELECT * FROM Episode")
   fun getEpisodes(): LiveData<List<Episode>>
 
+  @Query("SELECT * FROM Episode LIMIT 1")
+  fun getFirstEpisode(): LiveData<Episode>
+
 }

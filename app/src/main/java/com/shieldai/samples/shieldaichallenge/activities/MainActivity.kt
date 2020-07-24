@@ -73,11 +73,16 @@ class MainActivity : AppCompatActivity() {
     val restoredPosition = prefMngr.getInt(PREF_PREVIOUS_POSITION, 0)
     val episodeJson = prefMngr.getString(PREF_PREVIOUS_EPISODE, "")
     val restoredEpisode = Gson().fromJson(episodeJson, Episode::class.java)
-    restoredEpisode?.let {
+    if (restoredEpisode != null) {
       viewModel.setEpisode(restoredEpisode)
+    } else {
+      viewModel.firstEpisode.observe(this@MainActivity, Observer { episode ->
+        episode?.let {
+          viewModel.setEpisode(it)
+        }
+      })
     }
     viewModel.setPosition(restoredPosition)
-
     binding.recyclerViewEpisodes.post {
       binding.recyclerViewEpisodes.layoutManager?.scrollToPosition(restoredPosition)
     }
