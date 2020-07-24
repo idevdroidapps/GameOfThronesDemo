@@ -16,7 +16,7 @@ class EpisodeViewHolder(private val binding: ListItemBinding) : RecyclerView.Vie
     binding.episode = item
     binding.viewModel = viewModel
     binding.position = layoutPosition
-    binding.root.isSelected = layoutPosition == viewModel.currentSelected.value
+    binding.root.isSelected = layoutPosition == viewModel.currentPosition.value
     binding.executePendingBindings()
   }
 

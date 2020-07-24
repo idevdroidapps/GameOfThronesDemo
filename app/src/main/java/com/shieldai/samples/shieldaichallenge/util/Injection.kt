@@ -1,4 +1,4 @@
-package com.shieldai.samples.shieldaichallenge.ui.di
+package com.shieldai.samples.shieldaichallenge.util
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +20,11 @@ object Injection {
    * Creates an instance of [EpisodeRepository]
    */
   private fun provideEpisodesRepo(context: Context): EpisodeRepository {
-    return EpisodeRepository.getInstance(provideEpisodesDao(context))
+    return EpisodeRepository.getInstance(
+      provideEpisodesDao(
+        context
+      )
+    )
   }
 
   /**
@@ -30,7 +34,11 @@ object Injection {
   fun provideMainViewModelFactory(
     context: Context
   ): ViewModelProvider.Factory {
-    return MainViewModelFactory(provideEpisodesRepo(context))
+    return MainViewModelFactory(
+      provideEpisodesRepo(
+        context
+      )
+    )
   }
 
 }

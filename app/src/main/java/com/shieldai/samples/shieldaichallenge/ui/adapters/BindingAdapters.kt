@@ -37,6 +37,7 @@ fun TextView.setHtmlText(summary: String?){
 fun ImageView.originalImage(originalUrl: String?) {
   originalUrl?.let { url ->
     val options = RequestOptions()
+      .override(1280, 720)
       .diskCacheStrategy(DiskCacheStrategy.NONE)
       .fitCenter()
     try {
@@ -57,6 +58,8 @@ fun ImageView.mediumImage(mediumUrl: String?) {
   mediumUrl?.let { url ->
     val options = RequestOptions()
       .override(200, 100)
+      .diskCacheStrategy(DiskCacheStrategy.NONE)
+      .fitCenter()
     try {
       Glide
         .with(this.context)

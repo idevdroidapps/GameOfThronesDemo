@@ -13,18 +13,18 @@ class MainViewModel(repo: EpisodeRepository) : ViewModel() {
   private var _episode = MutableLiveData<Episode>()
   val episode: LiveData<Episode> get() = _episode
 
-  private var _currentSelected = MutableLiveData<Int>()
-  val currentSelected: LiveData<Int> get() = _currentSelected
+  private var _currentPosition = MutableLiveData<Int>()
+  val currentPosition: LiveData<Int> get() = _currentPosition
 
-  var previouslySelected = 0
+  var previousPosition = 0
 
   fun onItemClick(episode: Episode, position: Int) {
     _episode.value = episode
-    _currentSelected.value = position
+    _currentPosition.value = position
   }
 
-  fun setSelected(selected: Int){
-    _currentSelected.value = selected
+  fun setPosition(selected: Int){
+    _currentPosition.value = selected
   }
 
   fun setEpisode(episode: Episode){
