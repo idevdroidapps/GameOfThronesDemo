@@ -6,7 +6,7 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:onClick="@{() -> viewModel.currentEpisode(episode, position)}"
+    android:onClick="@{() -> viewModel.onItemClick(episode, position)}"
     android:background="@drawable/item_bg_selector">
 
     <ImageView

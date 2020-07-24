@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
 import com.shieldai.samples.shieldaichallenge.databinding.ListItemBinding
-import com.shieldai.samples.shieldaichallenge.ui.clicklisteners.EpisodeClickListener
 import com.shieldai.samples.shieldaichallenge.ui.viewmodels.MainViewModel
 
 class EpisodeViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -17,7 +16,7 @@ class EpisodeViewHolder(private val binding: ListItemBinding) : RecyclerView.Vie
     binding.episode = item
     binding.viewModel = viewModel
     binding.position = layoutPosition
-    binding.root.isSelected = layoutPosition == viewModel.position.value
+    binding.root.isSelected = layoutPosition == viewModel.currentSelected.value
     binding.executePendingBindings()
   }
 
