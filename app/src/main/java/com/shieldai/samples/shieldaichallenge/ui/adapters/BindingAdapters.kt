@@ -1,5 +1,7 @@
 package com.shieldai.samples.shieldaichallenge.ui.adapters
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.text.Html
 import android.util.Log
@@ -39,6 +41,7 @@ fun ImageView.originalImage(originalUrl: String?) {
     val options = RequestOptions()
       .override(1280, 720)
       .diskCacheStrategy(DiskCacheStrategy.NONE)
+      .placeholder(ColorDrawable(Color.WHITE))
       .fitCenter()
     try {
       Glide
@@ -59,6 +62,7 @@ fun ImageView.mediumImage(mediumUrl: String?) {
     val options = RequestOptions()
       .override(200, 100)
       .diskCacheStrategy(DiskCacheStrategy.NONE)
+      .placeholder(ColorDrawable(Color.WHITE))
       .fitCenter()
     try {
       Glide
