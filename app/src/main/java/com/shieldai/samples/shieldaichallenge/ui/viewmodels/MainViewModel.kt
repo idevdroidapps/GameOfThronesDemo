@@ -14,8 +14,12 @@ class MainViewModel(repo: EpisodeRepository) : ViewModel() {
   private var _episode = MutableLiveData<Episode>()
   val episode: LiveData<Episode> get() = _episode
 
-  fun currentEpisode(episode: Episode) {
+  private var _position = MutableLiveData<Int>()
+  val position: LiveData<Int> get() = _position
+
+  fun currentEpisode(episode: Episode, position: Int) {
     _episode.value = episode
+    _position.value = position
   }
 
 }

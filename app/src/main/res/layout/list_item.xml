@@ -6,7 +6,8 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:onClick="@{() -> clickListener.onClick(episode)}">
+    android:onClick="@{() -> viewModel.currentEpisode(episode, position)}"
+    android:background="@drawable/item_bg_selector">
 
     <ImageView
       android:id="@+id/label_thumbnail"
@@ -47,11 +48,16 @@
   <data>
 
     <variable
+      name="position"
+      type="Integer" />
+
+    <variable
       name="episode"
       type="com.shieldai.samples.shieldaichallenge.data.models.Episode" />
 
     <variable
-      name="clickListener"
-      type="com.shieldai.samples.shieldaichallenge.ui.clicklisteners.EpisodeClickListener" />
+      name="viewModel"
+      type="com.shieldai.samples.shieldaichallenge.ui.viewmodels.MainViewModel" />
+
   </data>
 </layout>

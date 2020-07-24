@@ -26,10 +26,7 @@ class MainActivity : AppCompatActivity() {
       Injection.provideMainViewModelFactory(this)
     ).get(MainViewModel::class.java)
 
-    val clickListener = EpisodeClickListener{ episode ->
-      viewModel.currentEpisode(episode)
-    }
-    val listAdapter = EpisodesListAdapter(clickListener)
+    val listAdapter = EpisodesListAdapter(viewModel)
 
     val binding: ActivityMainBinding =
       DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)

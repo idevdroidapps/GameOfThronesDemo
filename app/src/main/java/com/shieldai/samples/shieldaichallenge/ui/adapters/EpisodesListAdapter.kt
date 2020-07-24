@@ -1,13 +1,15 @@
 package com.shieldai.samples.shieldaichallenge.ui.adapters
 
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
-import com.shieldai.samples.shieldaichallenge.ui.clicklisteners.EpisodeClickListener
 import com.shieldai.samples.shieldaichallenge.ui.viewholders.EpisodeViewHolder
+import com.shieldai.samples.shieldaichallenge.ui.viewmodels.MainViewModel
 
-class EpisodesListAdapter(private val clickListener: EpisodeClickListener) :
+class EpisodesListAdapter(private val viewModel: MainViewModel) :
   ListAdapter<Episode, EpisodeViewHolder>(DiffCallback) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
@@ -16,7 +18,7 @@ class EpisodesListAdapter(private val clickListener: EpisodeClickListener) :
 
   override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
     getItem(position)?.let {
-      holder.bind(it, clickListener)
+      holder.bind(it, viewModel)
     }
   }
 
