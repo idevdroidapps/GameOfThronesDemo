@@ -8,42 +8,37 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-<!--    <androidx.core.widget.NestedScrollView-->
-<!--      android:layout_width="0dp"-->
-<!--      android:layout_height="0dp"-->
-<!--      app:layout_constraintBottom_toBottomOf="parent"-->
-<!--      app:layout_constraintEnd_toEndOf="parent"-->
-<!--      app:layout_constraintStart_toStartOf="@+id/guideline"-->
-<!--      app:layout_constraintTop_toTopOf="parent">-->
 
-<!--      <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent">
 
-<!--        <ImageView-->
-<!--          android:id="@+id/imageView_episode"-->
-<!--          android:layout_width="match_parent"-->
-<!--          android:layout_height="0dp"-->
-<!--          android:adjustViewBounds="true"-->
-<!--          app:layout_constraintEnd_toEndOf="parent"-->
-<!--          app:layout_constraintStart_toStartOf="parent"-->
-<!--          app:layout_constraintTop_toTopOf="parent"-->
-<!--          app:originalImage="@{viewmodel.episode.image.original}"-->
-<!--          app:srcCompat="@android:drawable/btn_dialog"-->
-<!--          tools:ignore="ContentDescription" />-->
+        <ImageView
+          android:id="@+id/imageView_episode"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:adjustViewBounds="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:originalImage="@{viewmodel.episode.image.original}"
+          tools:ignore="ContentDescription" />
 
-<!--        <TextView-->
-<!--          android:id="@+id/textView_episode"-->
-<!--          android:layout_width="match_parent"-->
-<!--          android:layout_height="0dp"-->
-<!--          android:text="@{viewmodel.episode.summary}"-->
-<!--          app:layout_constraintBottom_toBottomOf="parent"-->
-<!--          app:layout_constraintTop_toBottomOf="@+id/imageView_episode"-->
-<!--          app:layout_constraintEnd_toEndOf="parent"-->
-<!--          app:layout_constraintStart_toStartOf="parent"-->
-<!--          tools:text="Sample Description Text" />-->
-<!--      </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--    </androidx.core.widget.NestedScrollView>-->
+        <TextView
+          android:id="@+id/textView_episode"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@{viewmodel.episode.summary}"
+          app:layout_constraintTop_toBottomOf="@+id/imageView_episode"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          tools:text="Sample Description Text" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline"
