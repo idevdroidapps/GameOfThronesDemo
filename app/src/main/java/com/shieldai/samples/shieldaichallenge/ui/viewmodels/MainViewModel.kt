@@ -1,16 +1,14 @@
 package com.shieldai.samples.shieldaichallenge.ui.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
 import com.shieldai.samples.shieldaichallenge.data.repositories.EpisodeRepository
 
 class MainViewModel(private val repo: EpisodeRepository) : ViewModel() {
 
-  val episodes: LiveData<List<Episode>> = repo.getEpisodes()
+  val episodes: LiveData<List<Episode>> = repo.episodesFlow.asLiveData(viewModelScope.coroutineContext)
 
-  val firstEpisode: LiveData<Episode> = repo.getFirstEpisode()
+  val firstEpisode: LiveData<Episode> = repo.firstEpisodeFlow.asLiveData(viewModelScope.coroutineContext)
 
   private var _episode = MutableLiveData<Episode>()
   val episode: LiveData<Episode> get() = _episode

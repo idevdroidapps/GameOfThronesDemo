@@ -3,6 +3,7 @@ package com.shieldai.samples.shieldaichallenge.data.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EpisodeDao {
@@ -24,9 +25,9 @@ interface EpisodeDao {
   suspend fun clearAllEpisodes()
 
   @Query("SELECT * FROM Episode")
-  fun getEpisodes(): LiveData<List<Episode>>
+  fun getEpisodes(): Flow<List<Episode>>
 
   @Query("SELECT * FROM Episode LIMIT 1")
-  fun getFirstEpisode(): LiveData<Episode>
+  fun getFirstEpisode(): Flow<Episode>
 
 }
