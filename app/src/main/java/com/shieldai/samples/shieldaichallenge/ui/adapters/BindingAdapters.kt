@@ -9,19 +9,29 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @BindingAdapter("episodesData")
 fun bindEpisodesRecyclerView(
   recyclerView: RecyclerView,
-  data: LiveData<List<Episode>>?
+  data: Flow<PagingData<Episode>>?
 ) {
   val adapter = recyclerView.adapter as EpisodesListAdapter
-  adapter.submitList(data?.value)
+  GlobalScope.launch(Dispatchers.Main) {
+    data?.collectLatest {
+      adapter.submitData(it)
+    }
+  }
 }
 
 @BindingAdapter("htmlText")

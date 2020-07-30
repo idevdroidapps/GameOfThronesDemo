@@ -3,10 +3,12 @@ package com.shieldai.samples.shieldaichallenge.ui.viewmodels
 import androidx.lifecycle.*
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
 import com.shieldai.samples.shieldaichallenge.data.repositories.EpisodeRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
-class MainViewModel(private val repo: EpisodeRepository) : ViewModel() {
+class MainViewModel(repo: EpisodeRepository) : ViewModel() {
 
-  val episodes: LiveData<List<Episode>> = repo.episodesFlow.asLiveData(viewModelScope.coroutineContext)
+  val episodes = repo.episodes
 
   val firstEpisode: LiveData<Episode> = repo.firstEpisodeFlow.asLiveData(viewModelScope.coroutineContext)
 
