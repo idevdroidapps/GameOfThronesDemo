@@ -28,7 +28,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:adjustViewBounds="true"
-          app:originalImage="@{viewmodel.episode.image.original}"
+          app:originalImage="@{viewmodel.currentEpisode.image.original}"
           tools:ignore="ContentDescription" />
 
         <TextView
@@ -38,7 +38,7 @@
           android:layout_weight="2"
           android:padding="@dimen/material_spacing_standard"
           android:textSize="@dimen/summary_text_size"
-          app:htmlText="@{viewmodel.episode.summary}" />
+          app:htmlText="@{viewmodel.currentEpisode.summary}" />
 
       </LinearLayout>
     </ScrollView>

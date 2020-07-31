@@ -33,14 +33,7 @@ class MainActivity : AppCompatActivity() {
     binding.lifecycleOwner = this
 
     // Get List Adapter
-    val listAdapter = EpisodesListAdapter(viewModel)
-    listAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-      override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-        viewModel.currentPosition.value?.let {
-          binding.recyclerViewEpisodes.layoutManager?.scrollToPosition(it)
-        }
-      }
-    })
+    val listAdapter = listAdapter(viewModel, binding)
     binding.recyclerViewEpisodes.adapter = listAdapter
 
     // Upon observed changes of currentSelected
@@ -49,6 +42,18 @@ class MainActivity : AppCompatActivity() {
     // Restore Selected Position and Episode
     restorePreviousEpisode(viewModel)
 
+  }
+
+  private fun listAdapter(viewModel: MainViewModel, binding: ActivityMainBinding): EpisodesListAdapter{
+    val listAdapter = EpisodesListAdapter(viewModel)
+    listAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+      override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+        viewModel.currentPosition.value?.let {
+          binding.recyclerViewEpisodes.layoutManager?.scrollToPosition(it)
+        }
+      }
+    })
+    return listAdapter
   }
 
   private fun observeSelectionChanges(
@@ -79,19 +84,19 @@ class MainActivity : AppCompatActivity() {
     val restoredPosition = prefMngr.getInt(PREF_PREVIOUS_POSITION, 0)
     val restoredEpisode = Gson().fromJson(episodeJson, Episode::class.java)
     if (restoredEpisode != null) {
-      viewModel.setEpisode(restoredEpisode)
+      viewModel.setCurrentEpisode(restoredEpisode)
     } else {
       viewModel.firstEpisode.observe(this@MainActivity, Observer { episode ->
         episode?.let {
-          viewModel.setEpisode(it)
+          viewModel.setCurrentEpisode(it)
         }
       })
     }
-    viewModel.setPosition(restoredPosition)
+    viewModel.setCurrentPosition(restoredPosition)
   }
 
   private fun saveToSharedPreferences(viewModel: MainViewModel, selected: Int) {
-    val previousEpisode = viewModel.episode
+    val previousEpisode = viewModel.currentEpisode
     val jsonEpisode = Gson().toJson(previousEpisode.value)
 
     val editor = PreferenceManager.getDefaultSharedPreferences(this).edit()
