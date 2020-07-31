@@ -1,11 +1,8 @@
 package com.shieldai.samples.shieldaichallenge.ui.adapters
 
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
 import com.shieldai.samples.shieldaichallenge.ui.viewholders.EpisodeViewHolder
 import com.shieldai.samples.shieldaichallenge.ui.viewmodels.MainViewModel

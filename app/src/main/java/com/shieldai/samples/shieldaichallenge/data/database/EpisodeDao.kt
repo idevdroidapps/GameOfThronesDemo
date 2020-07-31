@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EpisodeDao {
@@ -29,6 +28,6 @@ interface EpisodeDao {
   fun getEpisodes(): PagingSource<Int, Episode>
 
   @Query("SELECT * FROM Episode LIMIT 1")
-  fun getFirstEpisode(): Flow<Episode>
+  fun getFirstEpisode(): LiveData<Episode>
 
 }

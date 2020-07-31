@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.shieldai.samples.shieldaichallenge.R
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
@@ -25,21 +26,28 @@ class MainActivity : AppCompatActivity() {
       Injection.provideMainViewModelFactory(this)
     ).get(MainViewModel::class.java)
 
-    // Get List Adapter
-    val listAdapter = EpisodesListAdapter(viewModel)
-
     // DataBinding
     val binding: ActivityMainBinding =
       DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
     binding.viewmodel = viewModel
     binding.lifecycleOwner = this
+
+    // Get List Adapter
+    val listAdapter = EpisodesListAdapter(viewModel)
+    listAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+      override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+        viewModel.currentPosition.value?.let {
+          binding.recyclerViewEpisodes.layoutManager?.scrollToPosition(it)
+        }
+      }
+    })
     binding.recyclerViewEpisodes.adapter = listAdapter
 
     // Upon observed changes of currentSelected
     observeSelectionChanges(viewModel, binding, listAdapter)
 
     // Restore Selected Position and Episode
-    restorePreviousEpisode(viewModel, binding)
+    restorePreviousEpisode(viewModel)
 
   }
 
@@ -65,13 +73,10 @@ class MainActivity : AppCompatActivity() {
     })
   }
 
-  private fun restorePreviousEpisode(
-    viewModel: MainViewModel,
-    binding: ActivityMainBinding
-  ) {
+  private fun restorePreviousEpisode(viewModel: MainViewModel) {
     val prefMngr = PreferenceManager.getDefaultSharedPreferences(this)
-    val restoredPosition = prefMngr.getInt(PREF_PREVIOUS_POSITION, 0)
     val episodeJson = prefMngr.getString(PREF_PREVIOUS_EPISODE, "")
+    val restoredPosition = prefMngr.getInt(PREF_PREVIOUS_POSITION, 0)
     val restoredEpisode = Gson().fromJson(episodeJson, Episode::class.java)
     if (restoredEpisode != null) {
       viewModel.setEpisode(restoredEpisode)
@@ -83,9 +88,6 @@ class MainActivity : AppCompatActivity() {
       })
     }
     viewModel.setPosition(restoredPosition)
-    binding.recyclerViewEpisodes.post {
-      binding.recyclerViewEpisodes.layoutManager?.scrollToPosition(restoredPosition)
-    }
   }
 
   private fun saveToSharedPreferences(viewModel: MainViewModel, selected: Int) {
