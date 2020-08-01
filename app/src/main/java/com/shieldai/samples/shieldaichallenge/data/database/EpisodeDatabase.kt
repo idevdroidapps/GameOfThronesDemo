@@ -4,19 +4,23 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.Constraints
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
+import com.shieldai.samples.shieldaichallenge.data.models.Video
 import com.shieldai.samples.shieldaichallenge.data.workers.RawJsonWorker
+import com.shieldai.samples.shieldaichallenge.util.RoomConverters
 
-@Database(entities = [Episode::class], version = 1, exportSchema = false)
-abstract class EpisodeDatabase: RoomDatabase() {
+@TypeConverters(RoomConverters::class)
+@Database(entities = [Episode::class, Video::class], version = 1, exportSchema = false)
+abstract class EpisodeDatabase : RoomDatabase() {
 
   abstract val dao: EpisodeDao
 
-  companion object{
+  companion object {
 
     @Volatile
     private var INSTANCE: EpisodeDatabase? = null

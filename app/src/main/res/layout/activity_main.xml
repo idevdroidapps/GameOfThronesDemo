@@ -28,7 +28,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:adjustViewBounds="true"
-          app:originalImage="@{viewmodel.currentEpisode.image.original}"
+          app:originalImage="@{viewModel.currentEpisode.image.original}"
           tools:ignore="ContentDescription" />
 
         <TextView
@@ -38,25 +38,18 @@
           android:layout_weight="2"
           android:padding="@dimen/material_spacing_standard"
           android:textSize="@dimen/summary_text_size"
-          app:htmlText="@{viewmodel.currentEpisode.summary}" />
+          app:htmlText="@{viewModel.currentEpisode.summary}" />
 
       </LinearLayout>
     </ScrollView>
 
-    <androidx.constraintlayout.widget.Guideline
-      android:id="@+id/guideline"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      app:layout_constraintGuide_percent="0.35" />
-
     <androidx.cardview.widget.CardView
       android:layout_width="0dp"
       android:layout_height="match_parent"
+      android:elevation="@dimen/list_elevation"
       android:outlineAmbientShadowColor="@color/shield_charcoal_grey"
       android:outlineSpotShadowColor="@color/shield_charcoal_grey"
       app:cardElevation="@dimen/list_elevation"
-      android:elevation="@dimen/list_elevation"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@+id/guideline"
       app:layout_constraintStart_toStartOf="parent"
@@ -67,18 +60,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/shield_white"
-        app:episodesData="@{viewmodel.episodes}"
+        app:episodesData="@{viewModel.episodes}"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/list_item" />
 
     </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_percent="0.35" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
   <data>
 
     <variable
-      name="viewmodel"
+      name="viewModel"
       type="com.shieldai.samples.shieldaichallenge.ui.viewmodels.MainViewModel" />
   </data>
 

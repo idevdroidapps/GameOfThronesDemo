@@ -8,17 +8,18 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @BindingAdapter("episodesData")
@@ -35,9 +36,9 @@ fun bindEpisodesRecyclerView(
 }
 
 @BindingAdapter("htmlText")
-fun TextView.setHtmlText(summary: String?){
+fun TextView.setHtmlText(summary: String?) {
   summary?.let {
-    text = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
       Html.fromHtml(it, Html.FROM_HTML_MODE_COMPACT)
     } else {
       @Suppress("DEPRECATION")
@@ -47,7 +48,7 @@ fun TextView.setHtmlText(summary: String?){
 }
 
 @BindingAdapter("itemTitle")
-fun TextView.setItemTitle(episode: Episode?){
+fun TextView.setItemTitle(episode: Episode?) {
   episode?.let {
     val itemText = "S${episode.season} Ep${episode.number}: ${episode.name}"
     text = itemText

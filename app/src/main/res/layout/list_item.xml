@@ -6,8 +6,8 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="96dp"
-    android:onClick="@{() -> viewModel.onItemClick(episode, position)}"
-    android:background="@drawable/background_selected_item">
+    android:background="@drawable/background_selected_item"
+    android:onClick="@{() -> viewModel.onItemClick(episode, position)}">
 
     <ImageView
       android:id="@+id/label_thumbnail"
@@ -20,7 +20,7 @@
       app:layout_constraintTop_toTopOf="parent"
       app:mediumImage="@{episode.image.medium}"
       tools:ignore="ContentDescription"
-      tools:src="@mipmap/ic_launcher"/>
+      tools:src="@mipmap/ic_launcher" />
 
     <TextView
       android:id="@+id/label_name"

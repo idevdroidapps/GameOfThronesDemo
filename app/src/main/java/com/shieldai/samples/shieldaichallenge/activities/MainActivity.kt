@@ -1,6 +1,7 @@
 package com.shieldai.samples.shieldaichallenge.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -29,11 +30,12 @@ class MainActivity : AppCompatActivity() {
     // DataBinding
     val binding: ActivityMainBinding =
       DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
-    binding.viewmodel = viewModel
+    binding.viewModel = viewModel
     binding.lifecycleOwner = this
 
     // Get List Adapter
     val listAdapter = listAdapter(viewModel, binding)
+    binding.recyclerViewEpisodes.setHasFixedSize(true)
     binding.recyclerViewEpisodes.adapter = listAdapter
 
     // Upon observed changes of currentSelected
@@ -44,12 +46,17 @@ class MainActivity : AppCompatActivity() {
 
   }
 
-  private fun listAdapter(viewModel: MainViewModel, binding: ActivityMainBinding): EpisodesListAdapter{
+  private fun listAdapter(
+    viewModel: MainViewModel,
+    binding: ActivityMainBinding
+  ): EpisodesListAdapter {
     val listAdapter = EpisodesListAdapter(viewModel)
     listAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
       override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-        viewModel.currentPosition.value?.let {
-          binding.recyclerViewEpisodes.layoutManager?.scrollToPosition(it)
+        if(itemCount != 0){
+          viewModel.currentPosition.value?.let {
+            binding.recyclerViewEpisodes.layoutManager?.scrollToPosition(it)
+          }
         }
       }
     })
@@ -86,8 +93,8 @@ class MainActivity : AppCompatActivity() {
     if (restoredEpisode != null) {
       viewModel.setCurrentEpisode(restoredEpisode)
     } else {
-      viewModel.firstEpisode.observe(this@MainActivity, Observer { episode ->
-        episode?.let {
+      viewModel.firstEpisode.observe(this@MainActivity, Observer { episodeWithVideo ->
+        episodeWithVideo?.let {
           viewModel.setCurrentEpisode(it)
         }
       })

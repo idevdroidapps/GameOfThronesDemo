@@ -7,7 +7,8 @@ import com.shieldai.samples.shieldaichallenge.data.models.Episode
 import com.shieldai.samples.shieldaichallenge.databinding.ListItemBinding
 import com.shieldai.samples.shieldaichallenge.ui.viewmodels.MainViewModel
 
-class EpisodeViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+class EpisodeViewHolder(private val binding: ListItemBinding) :
+  RecyclerView.ViewHolder(binding.root) {
 
   fun bind(
     item: Episode,

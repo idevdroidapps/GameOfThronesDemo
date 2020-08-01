@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
+import com.shieldai.samples.shieldaichallenge.data.models.Video
 
 @Dao
 interface EpisodeDao {
@@ -24,10 +25,25 @@ interface EpisodeDao {
   @Query("DELETE FROM Episode")
   suspend fun clearAllEpisodes()
 
-  @Query("SELECT * FROM Episode")
-  fun getEpisodes(): PagingSource<Int, Episode>
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insertVideo(video: Video): Long
 
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  @JvmSuppressWildcards
+  suspend fun insertVideos(videos: List<Video>)
+
+  @Update
+  suspend fun update(video: Video)
+
+  @Delete
+  suspend fun deleteVideo(video: Video)
+
+  @Transaction
   @Query("SELECT * FROM Episode LIMIT 1")
   fun getFirstEpisode(): LiveData<Episode>
+
+  @Transaction
+  @Query("SELECT * FROM Episode")
+  fun getEpisodes(): PagingSource<Int, Episode>
 
 }

@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.shieldai.samples.shieldaichallenge.R
 import com.shieldai.samples.shieldaichallenge.data.database.EpisodeDatabase
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
+import com.shieldai.samples.shieldaichallenge.data.models.Video
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException
@@ -21,12 +22,24 @@ class RawJsonWorker(private val context: Context, workerParams: WorkerParameters
 
   override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
     try {
-      val jsonString = readFileFromRawDirectory(R.raw.game_of_thrones_episodes)
+      val dao = EpisodeDatabase.getInstance(context).dao
+      var episodes: List<Episode> = emptyList()
+
+      var jsonString = readFileFromRawDirectory(R.raw.game_of_thrones_episodes)
       jsonString?.let { json ->
-        val episodes = parseEpisodes(json)
-        val dao = EpisodeDatabase.getInstance(context).dao
+        episodes = json.parseJson(EPISODES)
         dao.insertEpisodes(episodes)
       }
+
+      jsonString = readFileFromRawDirectory(R.raw.google_movie_samples)
+      jsonString?.let { json ->
+        val videos: List<Video> = json.parseJson(VIDEOS)
+        videos.forEachIndexed { index, video ->
+          video.videoId = episodes[index].id
+        }
+        dao.insertVideos(videos)
+      }
+
     } catch (e: Exception) {
       Result.failure()
     }
@@ -49,16 +62,28 @@ class RawJsonWorker(private val context: Context, workerParams: WorkerParameters
     return byteStream.toString()
   }
 
-  private fun parseEpisodes(jsonString: String): List<Episode> {
-    val episodeList = ArrayList<Episode>()
+  @Suppress("UNCHECKED_CAST")
+  private fun <T> String.parseJson(listType: String): List<T> {
+    val itemList = ArrayList<T>()
     try {
-      val jsonObject: JSONObject? = JSONObject(jsonString)
+      val jsonObject: JSONObject? = JSONObject(this)
       if (jsonObject != null) {
-        val episodes = jsonObject.optJSONArray("episodes")
-        episodes?.let {
+        val items = if (listType == EPISODES) {
+          jsonObject.optJSONArray(EPISODES)
+        } else {
+          jsonObject.optJSONArray(VIDEOS)
+        }
+        items?.let {
           for (i in 0 until it.length()) {
-            val episode = Gson().fromJson(it.getJSONObject(i).toString(), Episode::class.java)
-            episodeList.add(episode)
+            if (listType == EPISODES) {
+              itemList.add(
+                Gson().fromJson(it.getJSONObject(i).toString(), Episode::class.java) as T
+              )
+            } else {
+              itemList.add(
+                Gson().fromJson(it.getJSONObject(i).toString(), Video::class.java) as T
+              )
+            }
           }
         }
       } else {
@@ -67,7 +92,12 @@ class RawJsonWorker(private val context: Context, workerParams: WorkerParameters
     } catch (e: Throwable) {
       Result.failure()
     }
-    return episodeList
+    return itemList
+  }
+
+  companion object {
+    const val EPISODES = "episodes"
+    const val VIDEOS = "videos"
   }
 
 }
