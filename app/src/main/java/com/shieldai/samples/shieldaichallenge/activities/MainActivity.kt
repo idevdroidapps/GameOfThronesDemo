@@ -3,7 +3,6 @@ package com.shieldai.samples.shieldaichallenge.activities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -113,7 +112,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun releasePlayer() {
-    viewModel.setIsGone(false)
     exoPlayer?.apply {
       release()
     }
@@ -126,7 +124,6 @@ class MainActivity : AppCompatActivity() {
     listAdapter: EpisodesListAdapter
   ) {
     viewModel.currentPosition.observe(this, Observer {
-      viewModel.setIsGone(true)
       // Set Previous Item to Unselected
       val previousVH =
         binding.recyclerViewEpisodes.findViewHolderForAdapterPosition(viewModel.previousPosition)

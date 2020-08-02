@@ -18,14 +18,10 @@ class MainViewModel(private val repo: EpisodeRepository) : ViewModel() {
   private var _currentPosition = MutableLiveData<Int>()
   val currentPosition: LiveData<Int> get() = _currentPosition
 
-  private var _isGone = MutableLiveData<Boolean>()
-  val isGone: LiveData<Boolean> get() = _isGone
-
   var previousPosition = 0
 
   init {
     _currentPosition.value = previousPosition
-    _isGone.value = true
   }
 
   fun onItemClick(episode: Episode, position: Int) {
@@ -39,10 +35,6 @@ class MainViewModel(private val repo: EpisodeRepository) : ViewModel() {
 
   fun setCurrentEpisode(episode: Episode) {
     _currentEpisode.value = episode
-  }
-
-  fun setIsGone(isGone: Boolean){
-    _isGone.value = isGone
   }
 
 }
