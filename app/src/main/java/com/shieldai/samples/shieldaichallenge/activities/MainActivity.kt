@@ -1,5 +1,7 @@
 package com.shieldai.samples.shieldaichallenge.activities
 
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.gson.Gson
 import com.shieldai.samples.shieldaichallenge.R
 import com.shieldai.samples.shieldaichallenge.data.models.Episode
@@ -18,17 +24,21 @@ import com.shieldai.samples.shieldaichallenge.util.Injection
 
 class MainActivity : AppCompatActivity() {
 
+  lateinit var viewModel: MainViewModel
+  lateinit var binding: ActivityMainBinding
+  private var exoPlayer: SimpleExoPlayer? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     // Get ViewModel
-    val viewModel = ViewModelProvider(
+    viewModel = ViewModelProvider(
       this@MainActivity,
       Injection.provideMainViewModelFactory(this)
     ).get(MainViewModel::class.java)
 
     // DataBinding
-    val binding: ActivityMainBinding =
+    binding =
       DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
     binding.viewModel = viewModel
     binding.lifecycleOwner = this
@@ -46,6 +56,45 @@ class MainActivity : AppCompatActivity() {
 
   }
 
+  override fun onStart() {
+    super.onStart()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      initExoPlayer()
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    if ((Build.VERSION.SDK_INT < Build.VERSION_CODES.N || exoPlayer == null)) {
+      initExoPlayer()
+    }
+  }
+
+  override fun onPause() {
+    super.onPause()
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+      releasePlayer()
+    }
+  }
+
+  override fun onStop() {
+    super.onStop()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      releasePlayer()
+    }
+  }
+
+  private fun buildMediaSource(sourceUrl: String): MediaSource {
+    val uri = Uri.parse(sourceUrl)
+    val dataSourceFactory = DefaultDataSourceFactory(this, "exoplayer_shieldai")
+    return ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+  }
+
+  private fun initExoPlayer() {
+    exoPlayer = SimpleExoPlayer.Builder(this@MainActivity).build()
+    binding.exoPlayer.player = exoPlayer
+  }
+
   private fun listAdapter(
     viewModel: MainViewModel,
     binding: ActivityMainBinding
@@ -53,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     val listAdapter = EpisodesListAdapter(viewModel)
     listAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
       override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-        if(itemCount != 0){
+        if (itemCount != 0) {
           viewModel.currentPosition.value?.let {
             binding.recyclerViewEpisodes.layoutManager?.scrollToPosition(it)
           }
@@ -63,12 +112,21 @@ class MainActivity : AppCompatActivity() {
     return listAdapter
   }
 
+  private fun releasePlayer() {
+    viewModel.setIsGone(false)
+    exoPlayer?.apply {
+      release()
+    }
+    exoPlayer = null
+  }
+
   private fun observeSelectionChanges(
     viewModel: MainViewModel,
     binding: ActivityMainBinding,
     listAdapter: EpisodesListAdapter
   ) {
     viewModel.currentPosition.observe(this, Observer {
+      viewModel.setIsGone(true)
       // Set Previous Item to Unselected
       val previousVH =
         binding.recyclerViewEpisodes.findViewHolderForAdapterPosition(viewModel.previousPosition)
@@ -78,6 +136,8 @@ class MainActivity : AppCompatActivity() {
       val currentVH = binding.recyclerViewEpisodes.findViewHolderForAdapterPosition(it)
       currentVH?.itemView?.isSelected = true
       listAdapter.notifyItemChanged(it)
+      // Start Video
+      startPlayer()
       // Reset previouslySelected
       viewModel.previousPosition = it
       // Save to SharedPreferences
@@ -93,8 +153,8 @@ class MainActivity : AppCompatActivity() {
     if (restoredEpisode != null) {
       viewModel.setCurrentEpisode(restoredEpisode)
     } else {
-      viewModel.firstEpisode.observe(this@MainActivity, Observer { episodeWithVideo ->
-        episodeWithVideo?.let {
+      viewModel.firstEpisode.observe(this@MainActivity, Observer { episode ->
+        episode?.let {
           viewModel.setCurrentEpisode(it)
         }
       })
@@ -110,6 +170,18 @@ class MainActivity : AppCompatActivity() {
     editor.putString(PREF_PREVIOUS_EPISODE, jsonEpisode)
     editor.putInt(PREF_PREVIOUS_POSITION, selected)
     editor.apply()
+  }
+
+  private fun startPlayer() {
+    viewModel.currentEpisode.value?.let { episode ->
+      episode.video?.let { video ->
+        video.sources?.let { sourceList ->
+          val mediaSource = buildMediaSource(sourceList.first())
+          exoPlayer?.playWhenReady = true
+          exoPlayer?.prepare(mediaSource)
+        }
+      }
+    }
   }
 
   companion object {

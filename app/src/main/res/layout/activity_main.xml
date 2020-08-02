@@ -22,14 +22,12 @@
         android:orientation="vertical"
         android:weightSum="3">
 
-        <ImageView
-          android:id="@+id/imageView_episode"
+        <com.google.android.exoplayer2.ui.PlayerView
+          android:id="@+id/exoPlayer"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="360dp"
           android:layout_weight="1"
-          android:adjustViewBounds="true"
-          app:originalImage="@{viewModel.currentEpisode.image.original}"
-          tools:ignore="ContentDescription" />
+          app:use_controller="false"/>
 
         <TextView
           android:id="@+id/textView_episode"
@@ -42,6 +40,16 @@
 
       </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+      android:id="@+id/progressBar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:isGone="@{viewModel.isGone()}"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/guideline"
+      app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
       android:layout_width="0dp"

@@ -15,7 +15,7 @@ import com.shieldai.samples.shieldaichallenge.data.workers.RawJsonWorker
 import com.shieldai.samples.shieldaichallenge.util.RoomConverters
 
 @TypeConverters(RoomConverters::class)
-@Database(entities = [Episode::class, Video::class], version = 1, exportSchema = false)
+@Database(entities = [Episode::class], version = 1, exportSchema = false)
 abstract class EpisodeDatabase : RoomDatabase() {
 
   abstract val dao: EpisodeDao

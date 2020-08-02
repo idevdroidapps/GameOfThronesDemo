@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.text.Html
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -20,6 +21,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+@BindingAdapter("isGone")
+fun bindIsGone(view: View, isGone: Boolean) {
+  view.visibility = if (isGone) {
+    View.GONE
+  } else {
+    View.VISIBLE
+  }
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @BindingAdapter("episodesData")

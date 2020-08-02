@@ -18,5 +18,6 @@ data class Episode(
   @ColumnInfo(name = "season") val season: Int?,
   @ColumnInfo(name = "summary") val summary: String?,
   @ColumnInfo(name = "url") val url: String?,
-  @Embedded val _links: Links?
+  @Embedded val _links: Links?,
+  @Embedded var video: Video?
 )

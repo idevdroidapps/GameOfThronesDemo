@@ -24,21 +24,22 @@ class RawJsonWorker(private val context: Context, workerParams: WorkerParameters
     try {
       val dao = EpisodeDatabase.getInstance(context).dao
       var episodes: List<Episode> = emptyList()
+      var videos: List<Video> = emptyList()
 
       var jsonString = readFileFromRawDirectory(R.raw.game_of_thrones_episodes)
       jsonString?.let { json ->
         episodes = json.parseJson(EPISODES)
-        dao.insertEpisodes(episodes)
       }
 
       jsonString = readFileFromRawDirectory(R.raw.google_movie_samples)
       jsonString?.let { json ->
-        val videos: List<Video> = json.parseJson(VIDEOS)
-        videos.forEachIndexed { index, video ->
-          video.videoId = episodes[index].id
-        }
-        dao.insertVideos(videos)
+        videos = json.parseJson(VIDEOS)
       }
+
+      episodes.forEachIndexed { index, episode ->
+        episode.video = videos[index]
+      }
+      dao.insertEpisodes(episodes)
 
     } catch (e: Exception) {
       Result.failure()
@@ -80,9 +81,9 @@ class RawJsonWorker(private val context: Context, workerParams: WorkerParameters
                 Gson().fromJson(it.getJSONObject(i).toString(), Episode::class.java) as T
               )
             } else {
-              itemList.add(
-                Gson().fromJson(it.getJSONObject(i).toString(), Video::class.java) as T
-              )
+              val item = it.getJSONObject(i).toString()
+              val video = Gson().fromJson(item, Video::class.java)
+              itemList.add(video as T)
             }
           }
         }
