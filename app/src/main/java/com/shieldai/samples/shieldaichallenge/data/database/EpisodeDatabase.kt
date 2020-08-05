@@ -32,7 +32,7 @@ abstract class EpisodeDatabase : RoomDatabase() {
     }
 
     private fun buildRoomDatabase(context: Context): EpisodeDatabase {
-      return Room.databaseBuilder(context, EpisodeDatabase::class.java, "got_database")
+      return Room.databaseBuilder(context, EpisodeDatabase::class.java, "episode_database")
         .addCallback(EpisodeDatabaseCallback(context))
         .build()
     }
@@ -43,6 +43,7 @@ abstract class EpisodeDatabase : RoomDatabase() {
     override fun onCreate(db: SupportSQLiteDatabase) {
       super.onCreate(db)
       val constraints = Constraints.Builder()
+        .setRequiresStorageNotLow(false)
         .build()
       val oneTimeWorkRequest = OneTimeWorkRequestBuilder<RawJsonWorker>()
         .setConstraints(constraints)
