@@ -28,7 +28,7 @@ abstract class EpisodeDatabase: RoomDatabase() {
     }
 
     private fun buildRoomDatabase(context: Context): EpisodeDatabase {
-      return Room.databaseBuilder(context, EpisodeDatabase::class.java, "got_database")
+      return Room.databaseBuilder(context, EpisodeDatabase::class.java, "episode_database")
         .addCallback(EpisodeDatabaseCallback(context))
         .build()
     }
