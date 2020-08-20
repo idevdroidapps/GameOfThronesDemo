@@ -53,11 +53,11 @@
 
     <variable
       name="episode"
-      type="com.shieldai.samples.shieldaichallenge.data.models.Episode" />
+      type="com.example.samples.gameofthrones.data.models.Episode" />
 
     <variable
       name="viewModel"
-      type="com.shieldai.samples.shieldaichallenge.ui.viewmodels.MainViewModel" />
+      type="com.example.samples.gameofthrones.ui.viewmodels.MainViewModel" />
 
   </data>
 </layout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="shield_primary_blue">#2DA9E1</color>
-    <color name="shield_primary_dark">#2487B4</color>
-    <color name="shield_charcoal_grey">#414447</color>
+    <color name="primary_blue">#2DA9E1</color>
+    <color name="primary_dark">#2487B4</color>
+    <color name="charcoal_grey">#414447</color>
     <color name="light_grey">#414447</color>
     <color name="shield_white">#FFFFFF</color>
 

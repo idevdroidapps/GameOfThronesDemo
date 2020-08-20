@@ -53,8 +53,8 @@
     <androidx.cardview.widget.CardView
       android:layout_width="0dp"
       android:layout_height="match_parent"
-      android:outlineAmbientShadowColor="@color/shield_charcoal_grey"
-      android:outlineSpotShadowColor="@color/shield_charcoal_grey"
+      android:outlineAmbientShadowColor="@color/charcoal_grey"
+      android:outlineSpotShadowColor="@color/charcoal_grey"
       app:cardElevation="@dimen/list_elevation"
       android:elevation="@dimen/list_elevation"
       app:layout_constraintBottom_toBottomOf="parent"
@@ -79,7 +79,7 @@
 
     <variable
       name="viewmodel"
-      type="com.shieldai.samples.shieldaichallenge.ui.viewmodels.MainViewModel" />
+      type="com.example.samples.gameofthrones.ui.viewmodels.MainViewModel" />
   </data>
 
 </layout>
